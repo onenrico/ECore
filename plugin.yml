@@ -1,0 +1,6 @@
+name: ECore
+author: Onenrico
+version: 1.0alpha
+api-version: 1.13
+main: me.onenrico.ecore.mainapi.APICore
+softdepend: [CMI, Vault, PlaceholderAPI, WorldEdit, WorldGuard, PlayerPoints, Essentials,PermissionsEx,UltraPermissions]
