@@ -19,11 +19,13 @@ public class GUIView implements InventoryHolder {
 	private List<MenuItem> menuitems;
 	private GUIAction closeaction;
 	private DragAction dragaction;
+	private PlaceholderManager pm;
 
 	public GUIView(UUID owner, GUIMenu menu, PlaceholderManager pm) {
 		this.owner = owner;
 		this.menu = menu;
 		this.menuitems = new ArrayList<>();
+		this.pm = pm;
 		build();
 	}
 
@@ -32,7 +34,7 @@ public class GUIView implements InventoryHolder {
 	}
 
 	public void build(boolean reset) {
-		Inventory tempinv = Bukkit.createInventory(this, menu.getRow() * 9, menu.getTitle());
+		Inventory tempinv = Bukkit.createInventory(this, menu.getRow() * 9, pm.process(menu.getTitle()));
 		tempinv.setMaxStackSize(menu.getStacksize());
 		if (!reset) {
 			if (inventory != null) {
@@ -49,16 +51,75 @@ public class GUIView implements InventoryHolder {
 		inventory = tempinv;
 	}
 
+	public MenuItem setItem(MenuItemContainer item) {
+		return setItem(item,item.slot,null,true);
+	}
+	public MenuItem setItem(MenuItemContainer item,int slot) {
+		return setItem(item,slot,null,true);
+	}
+	public MenuItem setItem(MenuItemContainer item,PlaceholderManager pm) {
+		return setItem(item,item.slot,pm,true);
+	}
+	public MenuItem setItem(MenuItemContainer item,int slot,PlaceholderManager pm) {
+		return setItem(item,slot,pm,true);
+	}
+	public MenuItem changeItem(MenuItemContainer item) {
+		return setItem(item,item.slot,null,false);
+	}
+	public MenuItem changeItem(MenuItemContainer item,int slot) {
+		return setItem(item,slot,null,false);
+	}
+	public MenuItem changeItem(MenuItemContainer item,PlaceholderManager pm) {
+		return setItem(item,item.slot,pm,false);
+	}
+	public MenuItem changeItem(MenuItemContainer item,int slot,PlaceholderManager pm) {
+		return setItem(item,slot,pm,false);
+	}
+
+	public MenuItem setItem(MenuItemContainer item,int slot, PlaceholderManager pm, boolean clear) {
+		MenuItem result = null;
+		if (slot <= -1) {
+			result = new MenuItem(-1, item.clone());
+			return result;
+		}
+		for (final MenuItem mi : menuitems) {
+			if (mi.getSlot() == slot) {
+				result = mi;
+				result.setPm(pm);
+			}
+		}
+		if (result == null) {
+			result = new MenuItem(slot, item.clone(), pm);
+			menuitems.add(result);
+		} else {
+			result.setItem(item.clone());
+		}
+		if (clear) {
+			result.getActions().clear();
+		}
+		ItemStack invitem = item.clone();
+		if(pm !=null) pm.process(invitem);
+		inventory.setItem(slot, invitem);
+		return result;
+	}
+
 	public void setBorder(ItemStack border) {
 		for (int i : getBorderSlot()) {
 			inventory.setItem(i, border);
 		}
 	}
 
+	public void open(Player player) {
+		open(null,player);
+	}
 	public void open(Runnable callback, Player player) {
 		if (menu.animation == null) {
-
+			player.openInventory(inventory);
+			if(callback != null) {
+				callback.run();
+			}
 		}
+		MenuLiveUpdate.addAnimated(this);
 	}
 
 	private List<Integer> getBorderSlot() {

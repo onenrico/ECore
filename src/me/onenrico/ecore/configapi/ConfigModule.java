@@ -25,9 +25,9 @@ public abstract class ConfigModule extends Module {
 		enabled = true;
 	}
 
-	public abstract Locales getLocaleConfig();
+	public abstract Locales getLocaleConfig(String locale);
 
-	public abstract GUIConfig getGUIConfig();
+	public abstract GUIConfig getGUIConfig(String locale);
 	
 	public abstract DatabaseConfig getDatabaseConfig();
 	

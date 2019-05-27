@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import me.onenrico.ecore.messageapi.MessageUT;
 
 public class TimeManager {
@@ -23,7 +25,10 @@ public class TimeManager {
 		this.hit("Elapsed:");
 	}
 	public static String[] defaultarg = new String[] {"d","h","m","s"};
-	public static String formatTime(long second, String... args) {
+	public static String formatTime(double second, @Nullable String... args) {
+		if(args == null) {
+			args = defaultarg;
+		}
 		if (second < 0L) {
 			return "...";
 		}

@@ -25,7 +25,7 @@ public class RegionBeta extends RegionModule{
 	}
 
 	@Override
-	public StateFlag registerFlag(String flag, boolean def) {
+	public Object registerFlag(String flag, boolean def) {
 		final FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
 		StateFlag result = new StateFlag(flag,true);
 		try {
@@ -39,7 +39,8 @@ public class RegionBeta extends RegionModule{
 	}
 
 	@Override
-	public boolean canUse(StateFlag flag, Player p) {
+	public boolean canUse(Object flagraw, Player p) {
+		StateFlag flag  = (StateFlag)flagraw;
 		Location loc = p.getLocation();
 		RegionManager manager = WorldGuard.getInstance().getPlatform().getRegionContainer()
 				.get(WorldGuard.getInstance().getPlatform().getMatcher().getWorldByName(loc.getWorld().getName()));

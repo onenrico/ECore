@@ -1,6 +1,7 @@
 package me.onenrico.ecore.itemapi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -139,7 +140,11 @@ public class ItemBuilder {
 		if (meta == null) {
 			meta = Bukkit.getItemFactory().getItemMeta(item.getType());
 		}
-		meta.setLore(StringUT.t(lore));
+		List<String> newlore = new ArrayList<>();
+		for(String l : lore) {
+			newlore.addAll(new ArrayList<String>(Arrays.asList(l.split("<@>"))));
+		}
+		meta.setLore(StringUT.t(newlore));
 		item.setItemMeta(meta);
 		return item;
 	}

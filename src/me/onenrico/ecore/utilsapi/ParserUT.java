@@ -1,7 +1,3 @@
-//
-// Decompiled by Procyon v0.5.30
-//
-
 package me.onenrico.ecore.utilsapi;
 
 import java.util.ArrayList;
@@ -21,6 +17,9 @@ public class ParserUT {
 				String[] split2;
 				for (int length2 = (split2 = inside.split("<>")).length, j = 0; j < length2; ++j) {
 					final String v = split2[j];
+					if(v.split("=").length < 2) {
+						continue;
+					}
 					final String left = v.split("=")[0].toLowerCase();
 					final String right = v.split("=")[1];
 					value.put(left, right);

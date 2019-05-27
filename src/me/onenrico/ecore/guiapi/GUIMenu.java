@@ -8,6 +8,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import me.onenrico.ecore.configapi.ConfigModule;
 import me.onenrico.ecore.mainapi.MinecraftVersion;
 import me.onenrico.ecore.managerapi.PlaceholderManager;
 import me.onenrico.ecore.nbtapi.NBTItem;
@@ -30,11 +31,35 @@ public class GUIMenu {
 		if(views.containsKey(uuid)) {
 			return views.get(uuid);
 		}
-		return views.put(uuid, new GUIView(uuid,this,pm));
+		views.put(uuid, new GUIView(uuid,this,pm));
+		return views.get(uuid);
 	}
-	
+
+	public MenuItemContainer getConfigItem(String id) {
+		if(configitems.containsKey(id)) {
+			return configitems.get(id);
+		}else {
+//			return new MenuItemContainer(secure(new ItemStack(Material.TORCH)), -1);
+			return ConfigModule.request(handler).getGUIConfig(null).load(this, id);
+		}
+	}
+	public static Integer[] requestSlot(int available) {
+		if (available < 7) {
+			return new Integer[]{21, 22, 23, 30, 31, 32};
+		} else if (available < 11) {
+			return new Integer[] {20, 21, 22, 23, 24, 29, 30, 31, 32, 33};
+		} else if (available < 21) {
+			return new Integer[] {11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42};
+		}else {
+			return new Integer[]{ 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37,
+				38, 39, 40, 41, 42, 43 };
+		}
+	}
 	public void addConfigItems(String id, ItemStack item, int slot) {
 		configitems.put(id, new MenuItemContainer(secure(item), slot));
+	}
+	public void addConfigItems(String id, MenuItemContainer item) {
+		configitems.put(id, item);
 	}
 
 	protected ItemStack secure(ItemStack item) {

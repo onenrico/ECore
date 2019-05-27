@@ -25,13 +25,13 @@ public class MessageService extends MessageModule {
 		if (player == null || !player.isOnline()) {
 			return;
 		}
-		String prefix = ConfigModule.request(handler).getLocaleConfig().getJsonpluginPrefix();
-		String main = "<np>";
+		String prefix = "";
+		String main = "{prefix}";
 		if(msg != null)
 		msg = StringUT.t(msg);
 		if (msg.contains(main)) {
-			prefix = "";
-			msg = StringUT.remove(msg, main);
+			String pref = ConfigModule.request(handler).getLocaleConfig(null).getJsonpluginPrefix();
+			msg = msg.replace("{prefix}", pref);
 		}
 		main = "<console>";
 		if (msg.contains(main)) {

@@ -9,23 +9,29 @@ public class EConfig extends ConfigModule {
 	}
 
 	@Override
-	public Locales getLocaleConfig() {
+	public Locales getLocaleConfig(String locale) {
 		for(EYaml conf : EYaml.getConfigs(handler)) {
 			if(conf.path.startsWith("lang")) {
 				return (Locales) conf;
 			}
 		}
-		return new Locales(handler, "lang.yml", "EN");
+		if(locale == null) {
+			return null;
+		}
+		return new Locales(handler, "lang.yml", locale);
 	}
 
 	@Override
-	public GUIConfig getGUIConfig() {
+	public GUIConfig getGUIConfig(String locale) {
 		for(EYaml conf : EYaml.getConfigs(handler)) {
 			if(conf.path.startsWith("gui")) {
 				return (GUIConfig) conf;
 			}
 		}
-		return new GUIConfig(handler, "gui.yml", "EN");
+		if(locale == null) {
+			return null;
+		}
+		return new GUIConfig(handler, "gui.yml", locale);
 	}
 
 	@Override

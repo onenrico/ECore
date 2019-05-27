@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.bukkit.inventory.ItemStack;
 
 import me.onenrico.ecore.itemapi.ItemBuilder;
+import me.onenrico.ecore.utilsapi.MathUT;
+import me.onenrico.ecore.utilsapi.ParserUT;
 import me.onenrico.ecore.utilsapi.StringUT;
 
 public class PlaceholderManager {
@@ -94,9 +97,46 @@ public class PlaceholderManager {
 		if (bridgeprocessor != null) {
 			result = bridgeprocessor.replace(result);
 		}
+		
+		if(result.contains("<bar>")) {
+			result = getBarFromString(result);
+		}
 		return StringUT.t(result);
 	}
+	
+	public static String getBarFromString(String bar) {
+		while (bar.contains("<bar>") && bar.contains("</bar>")) {
+			final HashMap<String, String> value = ParserUT.extract("bar", bar).get(0);
+			final int totalbar = MathUT.strInt(value.getOrDefault("bars", "20"));
+			final String symbol = value.getOrDefault("symbol", "|");
+			final String filledcolor = value.getOrDefault("fill", "&a&l");
+			final String unfilledcolor = value.getOrDefault("empty", "&f&l");
+			final double v = MathUT.safe(value.getOrDefault("value", "0"));
+			final double maxvalue = MathUT.safe(value.getOrDefault("maxvalue", "0"));
+			bar = bar.replace(bar.substring(bar.indexOf("<bar>"), bar.indexOf("</bar>") + "</bar>".length()),
+					getBar(totalbar, v, maxvalue, symbol, false, filledcolor, unfilledcolor));
+		}
+		return bar;
+	}
+	
+	public static String getBar(int totalbar, double waiting, double maxvalue, String symbol, boolean reverse, String fc, String ufc) {
+		String bar = symbol;
+		
+		bar = StringUtils.repeat(bar, totalbar);
 
+		double persentase = MathUT.getPersentase(waiting, maxvalue);
+		
+		if(reverse)persentase = 100 - persentase;
+		
+		int value = (int) MathUT.getRealvalue(totalbar, persentase);
+		bar = bar.substring(0, value) + ufc + bar.substring(value, bar.length());
+
+		
+		String result = fc+"{bar}&r";
+		result = result.replace("{bar}", bar);
+		return result;
+	}
+	
 	public List<String> process(List<String> text) {
 		if (text == null) {
 			return new ArrayList<>();

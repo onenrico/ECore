@@ -1,5 +1,6 @@
 package me.onenrico.ecore.configapi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -132,7 +133,7 @@ public class Locales extends EYaml {
 		if (messages.get(msg) == null) {
 			messages.put(msg, getStrList("messages." + msg, Arrays.asList(new String[] { "Not Set" })));
 		}
-		return pm.process(messages.get(msg));
+		return pm.process(new ArrayList<>(messages.get(msg)));
 	}
 
 	public String getRawpluginPrefix() {

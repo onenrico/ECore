@@ -3,6 +3,7 @@ package me.onenrico.ecore.mainapi;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.onenrico.ecore.guiapi.MenuListener;
+import me.onenrico.ecore.guiapi.MenuLiveUpdate;
 
 public class APICore extends JavaPlugin {
 	static APICore instance;
@@ -15,6 +16,7 @@ public class APICore extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		MinecraftVersion.getVersion();
+		MenuLiveUpdate.startTimer();
 		getServer().getPluginManager().registerEvents(new MenuListener(), this);
 
 		if (getServer().getPluginManager().getPlugin("NeoMoreTPPlus") != null

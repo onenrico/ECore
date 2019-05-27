@@ -37,6 +37,7 @@ public class MenuListener implements Listener {
 					e.setCancelled(true);
 				}
 			}
+			if(view.getDragaction() != null)
 			view.getDragaction().act(e);
 		}
 	}
@@ -47,7 +48,7 @@ public class MenuListener implements Listener {
 			return;
 		}
 		final Inventory top = e.getView().getTopInventory();
-		if (isCustom(top)) {
+		if (!isCustom(top)) {
 			return;
 		}
 		e.setCancelled(true);

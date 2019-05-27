@@ -15,7 +15,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import me.onenrico.ecore.messageapi.MessageUT;
 import me.onenrico.ecore.utilsapi.StringUT;
 
 public class EYaml {
@@ -49,7 +48,6 @@ public class EYaml {
 		Set<EYaml> configs = EYaml.configs.getOrDefault(handler, new HashSet<>());
 		configs.add(this);
 		EYaml.configs.put(handler, configs);
-		MessageUT.cmsg("Loading Config: "+path+" | Plugin: "+handler);
 		file = new File(handler.getDataFolder(), path);
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdir();
@@ -61,18 +59,6 @@ public class EYaml {
 				handler.saveResource(path, false);
 				reload();
 				return;
-			}
-		}else {
-			is = handler.getResource(path);
-			if (is != null) {
-				replaceDefault(is);
-				if (!file.exists()) {
-					handler.saveResource(path, false);
-					reload();
-					return;
-				}
-			}else {
-				MessageUT.cmsg("ERROR Loading File: "+path+" | Plugin: "+handler);
 			}
 		}
 		reload();
@@ -125,18 +111,10 @@ public class EYaml {
 		if (!config.getStringList(path).isEmpty()) {
 			return config.getStringList(path);
 		}
-		if(defaultconfig == null) {
-			InputStream is = handler.getResource(path);
-			if (is != null) {
-				replaceDefault(is);
-				if (!file.exists()) {
-					handler.saveResource(path, false);
-					reload();
-				}
+		if(defaultconfig != null) {
+			if (!defaultconfig.getStringList(path).isEmpty()) {
+				def = defaultconfig.getStringList(path);
 			}
-		}
-		if (!defaultconfig.getStringList(path).isEmpty()) {
-			def = defaultconfig.getStringList(path);
 		}
 		config.set(path, def);
 		save();
@@ -152,18 +130,10 @@ public class EYaml {
 		if (config.get(path) != null) {
 			return StringUT.t(config.getString(path, def));
 		}
-		if(defaultconfig == null) {
-			InputStream is = handler.getResource(path);
-			if (is != null) {
-				replaceDefault(is);
-				if (!file.exists()) {
-					handler.saveResource(path, false);
-					reload();
-				}
+		if(defaultconfig != null) {
+			if (defaultconfig.get(path) != null) {
+				def = defaultconfig.get(path).toString();
 			}
-		}
-		if (defaultconfig.get(path) != null) {
-			def = defaultconfig.get(path).toString();
 		}
 		config.set(path, def);
 		save();

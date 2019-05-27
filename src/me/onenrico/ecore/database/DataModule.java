@@ -11,27 +11,27 @@ import me.onenrico.ecore.mainapi.Module;
 import me.onenrico.ecore.messageapi.MessageUT;
 
 public abstract class DataModule extends Module{
-	private static HashMap<String, DataModule> cache = new HashMap<>();
+	private static HashMap<Plugin, DataModule> cache = new HashMap<>();
 
 	public static DataModule request(Plugin handler) {
 		return request(handler,null);
 	}
 	public static DataModule request(Plugin handler, DataModule manager) {
 		if(manager == null) {
-			if(cache.containsKey(handler.getName())) {
-				return cache.get(handler.getName());
+			if(cache.containsKey(handler)) {
+				return cache.get(handler);
 			}
 			return null;
 		}
-		if(!cache.containsKey(handler.getName())) {
-			return cache.put(handler.getName(), manager);
+		if(!cache.containsKey(handler)) {
+			return cache.put(handler, manager);
 		}
-		return cache.get(handler.getName());
+		return cache.get(handler);
 	}
 
 	public static void unload(Plugin handler) {
 		DataModule module = request(handler);
-		cache.remove(handler.getName());
+		cache.remove(handler);
 		if(module == null) {
 			MessageUT.cmsg("Database Module is NULL");
 			return;
@@ -48,7 +48,7 @@ public abstract class DataModule extends Module{
 
 	public DataModule(Plugin handler) {
 		super(handler);
-		cache.put(handler.getName(), this);
+		cache.put(handler, this);
 		enabled = true;
 	}
 

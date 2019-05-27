@@ -23,7 +23,7 @@ public class RegionLegacy extends RegionModule{
 	}
 
 	@Override
-	public StateFlag registerFlag(String flag, boolean def) {
+	public Object registerFlag(String flag, boolean def) {
 		final FlagRegistry registry = worldguard.getFlagRegistry();
 		StateFlag result = new StateFlag(flag,true);
 		try {
@@ -37,7 +37,8 @@ public class RegionLegacy extends RegionModule{
 	}
 
 	@Override
-	public boolean canUse(StateFlag flag, Player p) {
+	public boolean canUse(Object flagraw, Player p) {
+		StateFlag flag  = (StateFlag)flagraw;
 		Location loc = p.getLocation();
 		RegionManager manager = this.worldguard.getRegionManager(p.getWorld());
 		final Vector v = new Vector().setX(loc.getX()).setY(loc.getY()).setZ(loc.getZ());
