@@ -46,7 +46,8 @@ public class GUIConfig extends EYaml {
 			for(String item : getSection(gui).getKeys(false)) {
 				if(item.equalsIgnoreCase("title")
 						|| item.equalsIgnoreCase("row")
-						)continue;
+				)continue;
+				load(gm,item);
 			}
 			loadedGUI.add(gm);
 		}
