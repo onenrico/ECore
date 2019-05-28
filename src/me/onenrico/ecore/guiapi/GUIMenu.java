@@ -1,6 +1,8 @@
 package me.onenrico.ecore.guiapi;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Material;
@@ -39,21 +41,29 @@ public class GUIMenu {
 		if(configitems.containsKey(id)) {
 			return configitems.get(id);
 		}else {
-//			return new MenuItemContainer(secure(new ItemStack(Material.TORCH)), -1);
 			return ConfigModule.request(handler).getGUIConfig(null).load(this, id);
 		}
 	}
-	public static Integer[] requestSlot(int available) {
-		if (available < 7) {
-			return new Integer[]{21, 22, 23, 30, 31, 32};
-		} else if (available < 11) {
-			return new Integer[] {20, 21, 22, 23, 24, 29, 30, 31, 32, 33};
-		} else if (available < 21) {
-			return new Integer[] {11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42};
-		}else {
-			return new Integer[]{ 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37,
-				38, 39, 40, 41, 42, 43 };
+	public static Integer[] requestSlot(GUIMenu gm) {
+		List<Integer> resultmap = new ArrayList<>();
+		for(int r = 1;r < gm.getRow() - 1;r++) {
+			int offset = (r * 9) + 1;
+			for(int i = 0; i < 8;i++) {
+				resultmap.add(i+offset);
+			}
 		}
+		Integer[] result = resultmap.toArray(new Integer[resultmap.size()]);
+		return result;
+//		if (available < 7) {
+//			return new Integer[]{21, 22, 23, 30, 31, 32};
+//		} else if (available < 11) {
+//			return new Integer[] {20, 21, 22, 23, 24, 29, 30, 31, 32, 33};
+//		} else if (available < 21) {
+//			return new Integer[] {11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42};
+//		}else {
+//			return new Integer[]{ 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37,
+//				38, 39, 40, 41, 42, 43 };
+//		}
 	}
 	public void addConfigItems(String id, ItemStack item, int slot) {
 		configitems.put(id, new MenuItemContainer(secure(item), slot));
