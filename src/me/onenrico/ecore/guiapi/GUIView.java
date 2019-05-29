@@ -47,6 +47,8 @@ public class GUIView implements InventoryHolder {
 					}
 				}
 			}
+		}else {
+			menuitems.clear();
 		}
 		inventory = tempinv;
 	}
@@ -105,7 +107,7 @@ public class GUIView implements InventoryHolder {
 
 	public void setBorder(ItemStack border) {
 		for (int i : getBorderSlot()) {
-			inventory.setItem(i, border);
+			setItem(new MenuItemContainer(border,i));
 		}
 	}
 
@@ -114,12 +116,20 @@ public class GUIView implements InventoryHolder {
 	}
 	public void open(Runnable callback, Player player) {
 		if (menu.animation == null) {
+			MenuLiveUpdate.refresh(this);
 			player.openInventory(inventory);
 			if(callback != null) {
 				callback.run();
 			}
+			MenuLiveUpdate.addAnimated(this);
+		}else {
+			menu.animation.open(()->{
+				MenuLiveUpdate.addAnimated(this);
+				if(callback != null) {
+					callback.run();
+				}
+			}, this, player);
 		}
-		MenuLiveUpdate.addAnimated(this);
 	}
 
 	private List<Integer> getBorderSlot() {

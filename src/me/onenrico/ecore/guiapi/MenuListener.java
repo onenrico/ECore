@@ -2,6 +2,7 @@ package me.onenrico.ecore.guiapi;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -61,6 +62,13 @@ public class MenuListener implements Listener {
 		}
 		final int slot = e.getSlot();
 		final MenuItem mi = view.getMenuItem(slot);
+		
+		MenuClickEvent event = new MenuClickEvent(view,mi,(Player)e.getWhoClicked());
+		Bukkit.getPluginManager().callEvent(event);
+		if(event.isCancelled()) {
+			return;
+		}
+		
 		if (mi == null) {
 			if (view.getMenu().isStealable()) {
 				e.setCancelled(false);

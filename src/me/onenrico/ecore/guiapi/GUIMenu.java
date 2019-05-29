@@ -31,7 +31,9 @@ public class GUIMenu {
 	public GUIView requestView(HumanEntity player,PlaceholderManager pm) {
 		UUID uuid = player.getUniqueId();
 		if(views.containsKey(uuid)) {
-			return views.get(uuid);
+			GUIView gv = views.get(uuid);
+			gv.build(true);
+			return gv;
 		}
 		views.put(uuid, new GUIView(uuid,this,pm));
 		return views.get(uuid);
@@ -48,7 +50,7 @@ public class GUIMenu {
 		List<Integer> resultmap = new ArrayList<>();
 		for(int r = 1;r < gm.getRow() - 1;r++) {
 			int offset = (r * 9) + 1;
-			for(int i = 0; i < 8;i++) {
+			for(int i = 0; i < 7;i++) {
 				resultmap.add(i+offset);
 			}
 		}
