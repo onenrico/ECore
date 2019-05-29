@@ -70,6 +70,7 @@ public class DataManagerBase extends DataModule{
 	public synchronized void save(EObject data) {
 		final HashMap<String, Object> columns = data.getValues();
 		if (!databasetype.equals(DatabaseType.YML)) {
+			MessageUT.cmsg(SQLop.insert(data.getTable().getName(), columns));
 			SQLop.executeUpdate(getConnection(),SQLop.insert(data.getTable().getName(), columns));
 		} else {
 			final FileConfiguration fc = ConfigModule.request(handler).getDatabaseConfig().getConfig();

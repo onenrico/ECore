@@ -201,7 +201,7 @@ public class ETable {
 					loadedValue.put(value.get(primary), value);
 					EObject obj;
 					try {
-						obj = object.getConstructor(String.class).newInstance(value.remove(primary));
+						obj = object.getConstructor(Plugin.class,String.class).newInstance(handler,value.remove(primary));
 					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException | NoSuchMethodException | SecurityException ex2) {
 						MessageUT.cmsg("Cannot create " + object.getSimpleName() + " Exception Occurred");
@@ -238,7 +238,7 @@ public class ETable {
 						loadedValue.put(value.get(primary), value);
 						EObject obj;
 						try {
-							obj = object.getConstructor(String.class).newInstance(value.remove(primary));
+							obj = object.getConstructor(Plugin.class,String.class).newInstance(handler,value.remove(primary));
 						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException | NoSuchMethodException | SecurityException ex3) {
 							ex3.printStackTrace();

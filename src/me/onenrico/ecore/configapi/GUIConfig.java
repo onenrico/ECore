@@ -9,20 +9,12 @@ import org.bukkit.plugin.Plugin;
 import me.onenrico.ecore.enumsapi.EMaterial;
 import me.onenrico.ecore.guiapi.GUIMenu;
 import me.onenrico.ecore.guiapi.MenuItemContainer;
+import me.onenrico.ecore.guiapi.OpenAnimation;
+import me.onenrico.ecore.guiapi.WaveAnimation;
 import me.onenrico.ecore.itemapi.ItemBuilder;
 import me.onenrico.ecore.managerapi.PlaceholderManager;
 
 public class GUIConfig extends EYaml {
-//      GUI.yml FORMAT
-//
-//		MenuName:
-//		  Title: "&lMenu Name &8▚&1{page}&8/&1{maxpage}&8▞"
-//		  BorderItem:
-//		    Material: BLACK_STAINED_GLASS_PANE
-//		    Displayname: "&r"
-//		    Description:
-//		    - ""
-//		    Slot: -1
 	public PlaceholderManager pm;
 	public String locale;
 	public List<GUIMenu> loadedGUI = new ArrayList<>();
@@ -38,6 +30,7 @@ public class GUIConfig extends EYaml {
 		loadedGUI.clear();
 		Locales locales = ConfigModule.request(handler).getLocaleConfig(locale);
 		pm = locales.pm;
+		
 		for(String gui : getSection("").getKeys(false)) {
 			GUIMenu gm = new GUIMenu(handler, gui, getStr(gui+"."+"Title",gui+" Title Not Set !"), getInt(gui+"."+"Row",6));
 			if(getSection(gui) == null) {
@@ -50,6 +43,24 @@ public class GUIConfig extends EYaml {
 				load(gm,item);
 			}
 			loadedGUI.add(gm);
+		}
+		EYaml guianimation = new EYaml(handler, "gui_animation.yml");
+		for(String animation : guianimation.getSection("").getKeys(false)) {
+			List<ItemStack> block_items = new ArrayList<>();
+			List<ItemStack> wave_items = new ArrayList<>();
+			for(String block : guianimation.getStrList(animation+".blocks")) {
+				block_items.add(EMaterial.fromString(block).parseItem());
+			}
+			for(String wave : guianimation.getStrList(animation+".waves")) {
+				wave_items.add(EMaterial.fromString(wave).parseItem());
+			}
+			for(String gui : guianimation.getStrList(animation+".menu")) {
+				GUIMenu gm = request(gui);
+				if(gm != null) {
+					OpenAnimation anim = new WaveAnimation(block_items, wave_items);
+					gm.setAnimation(anim);
+				}
+			}
 		}
 	}
 	public MenuItemContainer load(GUIMenu gm, String item) {
