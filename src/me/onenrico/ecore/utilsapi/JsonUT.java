@@ -96,7 +96,6 @@ public class JsonUT {
 				for (int length2 = (array = commands).length, j = 0; j < length2; ++j) {
 					String eventstr = array[j];
 					eventstr = eventstr.replace("{text}", text);
-					eventstr = eventstr.replace("{player}", player.getName());
 					if (eventstr.contains("#C:")) {
 						eventstr = eventstr.replace("#C:", "");
 						if (eventstr.contains("$RUN:")) {

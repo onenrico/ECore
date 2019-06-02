@@ -110,7 +110,6 @@ public class MessageService extends MessageModule {
 		if (pm == null) {
 			pm = new PlaceholderManager();
 		}
-		pm.add("player", player.getName());
 		msg = pm.process(msg);
 		send(player, msg);
 	}
@@ -120,7 +119,6 @@ public class MessageService extends MessageModule {
 		if (pm == null) {
 			pm = new PlaceholderManager();
 		}
-		pm.add("player", player.getName());
 		for (String msg : msgs) {
 			msg = pm.process(msg);
 			send(player, msg);
