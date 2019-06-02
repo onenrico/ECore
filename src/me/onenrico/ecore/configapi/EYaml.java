@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,7 @@ public class EYaml {
 	}
 
 	public static void reloadAll(Plugin handler) {
-		for (EYaml ey : configs.get(handler)) {
+		for (EYaml ey : new ArrayList<>(configs.get(handler))) {
 			ey.reload();
 			ey.setup();
 		}
@@ -59,6 +60,14 @@ public class EYaml {
 				handler.saveResource(path, false);
 				reload();
 				return;
+			}
+		}else {
+			if(!file.exists()) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		reload();

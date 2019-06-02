@@ -32,6 +32,7 @@ public class GUIMenu {
 		UUID uuid = player.getUniqueId();
 		if(views.containsKey(uuid)) {
 			GUIView gv = views.get(uuid);
+			gv.setPM(pm);
 			gv.build(true);
 			return gv;
 		}

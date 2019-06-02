@@ -212,4 +212,7 @@ public class GUIView implements InventoryHolder {
 	public void setDragaction(DragAction dragaction) {
 		this.dragaction = dragaction;
 	}
+	public void setPM(PlaceholderManager pm) {
+		this.pm = pm;
+	}
 }
