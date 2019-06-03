@@ -55,6 +55,11 @@ public class MenuListener implements Listener {
 		e.setCancelled(true);
 		final GUIView view = (GUIView) top.getHolder();
 		if (e.getClickedInventory().equals(e.getView().getBottomInventory())) {
+			if(view.getBottomclickaction() != null){
+				if(view.getBottomclickaction().valid(e.getClick())) {
+					view.getBottomclickaction().act(e);
+				}
+			}
 			if (view.getMenu().isStoreable()) {
 				e.setCancelled(false);
 			}
@@ -62,7 +67,6 @@ public class MenuListener implements Listener {
 		}
 		final int slot = e.getSlot();
 		final MenuItem mi = view.getMenuItem(slot);
-		
 		MenuClickEvent event = new MenuClickEvent(view,mi,(Player)e.getWhoClicked());
 		Bukkit.getPluginManager().callEvent(event);
 		if(event.isCancelled()) {

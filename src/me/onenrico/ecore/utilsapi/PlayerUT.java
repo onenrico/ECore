@@ -1,11 +1,8 @@
-//
-// Decompiled by Procyon v0.5.30
-//
 
 package me.onenrico.ecore.utilsapi;
 
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -13,10 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerUT {
-	public static Collection<? extends Player> getOnlinePlayers() {
-		return Bukkit.getServer().getOnlinePlayers();
-	}
-
 	public static int getTotalExperience(final Player player) {
 		int experience = 0;
 		final int level = player.getLevel();
@@ -100,16 +93,15 @@ public class PlayerUT {
 		if (exact) {
 			return Bukkit.getPlayerExact(name);
 		}
-		return Bukkit.getPlayer(name);
+		List<Player> players = Bukkit.matchPlayer(name);
+		if(players.isEmpty()) {
+			return null;
+		}
+		return players.get(0);
 	}
 
 	public static Player getPlayer(final UUID uuid) {
 		return Bukkit.getPlayer(uuid);
-	}
-
-	public static Player getPlayer(final Object object) {
-		final Player player = (Player) object;
-		return player;
 	}
 
 	public static Boolean isOnline(final Player player) {

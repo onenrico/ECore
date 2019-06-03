@@ -17,8 +17,9 @@ public class GUIView implements InventoryHolder {
 	private UUID owner;
 	private Inventory inventory;
 	private List<MenuItem> menuitems;
-	private GUIAction closeaction;
+	private CloseAction closeaction;
 	private DragAction dragaction;
+	private GUIAction bottomclickaction;
 	private PlaceholderManager pm;
 
 	public GUIView(UUID owner, GUIMenu menu, PlaceholderManager pm) {
@@ -197,11 +198,11 @@ public class GUIView implements InventoryHolder {
 		this.inventory = inventory;
 	}
 
-	public GUIAction getCloseaction() {
+	public CloseAction getCloseaction() {
 		return closeaction;
 	}
 
-	public void setCloseaction(GUIAction closeaction) {
+	public void setCloseaction(CloseAction closeaction) {
 		this.closeaction = closeaction;
 	}
 
@@ -214,5 +215,13 @@ public class GUIView implements InventoryHolder {
 	}
 	public void setPM(PlaceholderManager pm) {
 		this.pm = pm;
+	}
+
+	public GUIAction getBottomclickaction() {
+		return bottomclickaction;
+	}
+
+	public void setBottomclickaction(GUIAction bottomclickaction) {
+		this.bottomclickaction = bottomclickaction;
 	}
 }

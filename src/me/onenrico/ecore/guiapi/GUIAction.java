@@ -2,8 +2,8 @@ package me.onenrico.ecore.guiapi;
 
 import java.util.Arrays;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 public abstract class GUIAction {
 	private ClickType[] clicktype;
@@ -38,6 +38,6 @@ public abstract class GUIAction {
 		return false;
 	}
 
-	public abstract void act(Event event);
+	public abstract void act(InventoryClickEvent event);
 
 }

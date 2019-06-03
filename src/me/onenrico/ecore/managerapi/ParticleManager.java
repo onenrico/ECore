@@ -78,9 +78,19 @@ public class ParticleManager {
 			}
 		} else {
 			if(player == null) {
-				loc.getWorld().spawnParticle(Particle.valueOf(particle), x, y, z, amount, xOffset, yOffset, zOffset, data, true);
+				try {
+					loc.getWorld().spawnParticle(Particle.valueOf(particle), x, y, z, amount, xOffset, yOffset, zOffset, data, 
+							true);
+				}catch(IllegalArgumentException ex) {
+					loc.getWorld().spawnParticle(Particle.valueOf(particle), x, y, z, amount, xOffset, yOffset, zOffset, data);
+				}
 			}else {
-				player.spawnParticle(Particle.valueOf(particle), x, y, z, amount, xOffset, yOffset, zOffset, data, true);
+				try {
+					player.spawnParticle(Particle.valueOf(particle), x, y, z, amount, xOffset, yOffset, zOffset, data, true);
+				}
+				catch(IllegalArgumentException ex) {
+					player.spawnParticle(Particle.valueOf(particle), x, y, z, amount, xOffset, yOffset, zOffset, data);
+				}
 			}
 		}
 	}
