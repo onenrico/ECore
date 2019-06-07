@@ -24,7 +24,48 @@ public class GUIConfig extends EYaml {
 		this.locale = locale;
 		setup();
 	}
+	public GUIMenu request(String gui) {
+		for(GUIMenu gm : loadedGUI) {
+			if(gm.getAlias().equalsIgnoreCase(gui)) {
+				return gm;
+			}
+		}
+		return load(gui);
+	}
 
+	public MenuItemContainer load(GUIMenu gm, String item) {
+		String pref = gm.getAlias()+"."+item+".";
+		ItemStack material = EMaterial.fromString(getStr(pref+"Material", "TORCH")).parseItem().clone();
+		String displayname = getStr(pref+"Displayname",item+" Displayname not set...");
+		List<String> description = getStrList(pref+"Description",new ArrayList<>());
+		int slot = getInt(pref+"Slot");
+		ItemStack is = ItemBuilder.changeDisplayName(material, displayname);
+		is = ItemBuilder.changeLore(is, description);
+		gm.addConfigItems(item, pm.process(is), slot);
+		return gm.getConfigItem(item);
+	}
+	
+	public GUIMenu load(String gui) {
+		GUIMenu gm = new GUIMenu(handler, gui, getStr(gui+"."+"Title",gui+" Title Not Set !"), getInt(gui+"."+"Row",6));
+		if(getSection(gui) == null) {
+			for(String item : getDefSection(gui).getKeys(false)) {
+				if(item.equalsIgnoreCase("title")
+						|| item.equalsIgnoreCase("row")
+				)continue;
+				load(gm,item);
+			}
+		}else {
+			for(String item : getSection(gui).getKeys(false)) {
+				if(item.equalsIgnoreCase("title")
+						|| item.equalsIgnoreCase("row")
+				)continue;
+				load(gm,item);
+			}
+		}
+		loadedGUI.add(gm);
+		return gm;
+	}
+	
 	@Override
 	public void setup() {
 		loadedGUI.clear();
@@ -32,17 +73,7 @@ public class GUIConfig extends EYaml {
 		pm = locales.pm;
 		
 		for(String gui : getSection("").getKeys(false)) {
-			GUIMenu gm = new GUIMenu(handler, gui, getStr(gui+"."+"Title",gui+" Title Not Set !"), getInt(gui+"."+"Row",6));
-			if(getSection(gui) == null) {
-				continue;
-			}
-			for(String item : getSection(gui).getKeys(false)) {
-				if(item.equalsIgnoreCase("title")
-						|| item.equalsIgnoreCase("row")
-				)continue;
-				load(gm,item);
-			}
-			loadedGUI.add(gm);
+			load(gui);
 		}
 		EYaml guianimation = new EYaml(handler, "gui_animation.yml");
 		for(String animation : guianimation.getSection("").getKeys(false)) {
@@ -63,24 +94,5 @@ public class GUIConfig extends EYaml {
 			}
 		}
 	}
-	public MenuItemContainer load(GUIMenu gm, String item) {
-		String pref = gm.getAlias()+"."+item+".";
-		ItemStack material = EMaterial.fromString(getStr(pref+"Material", "TORCH")).parseItem().clone();
-		String displayname = getStr(pref+"Displayname",item+" Displayname not set...");
-		List<String> description = getStrList(pref+"Description",new ArrayList<>());
-		int slot = getInt(pref+"Slot");
-		ItemStack is = ItemBuilder.changeDisplayName(material, displayname);
-		is = ItemBuilder.changeLore(is, description);
-		gm.addConfigItems(item, pm.process(is), slot);
-		return gm.getConfigItem(item);
-	}
 	
-	public GUIMenu request(String gui) {
-		for(GUIMenu gm : loadedGUI) {
-			if(gm.getAlias().equalsIgnoreCase(gui)) {
-				return gm;
-			}
-		}
-		return null;
-	}
 }

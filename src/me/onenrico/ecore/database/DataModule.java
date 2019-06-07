@@ -32,6 +32,7 @@ public abstract class DataModule extends Module{
 	public static void unload(Plugin handler) {
 		DataModule module = request(handler);
 		cache.remove(handler);
+		ETable.loaded.remove(handler);
 		if(module == null) {
 			MessageUT.cmsg("Database Module is NULL");
 			return;

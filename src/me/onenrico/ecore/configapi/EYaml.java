@@ -111,6 +111,10 @@ public class EYaml {
 	public ConfigurationSection getSection(final String path) {
 		return config.getConfigurationSection(path);
 	}
+	
+	public ConfigurationSection getDefSection(final String path) {
+		return defaultconfig.getConfigurationSection(path);
+	}
 
 	public List<String> getStrList(final String path) {
 		return config.getStringList(path);

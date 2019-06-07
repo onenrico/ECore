@@ -150,7 +150,7 @@ public class ETable {
 		}
 	}
 
-	public synchronized void create(final BukkitRunnable callback) {
+	public void create(final BukkitRunnable callback) {
 		DataModule dm = DataModule.request(handler);
 		DatabaseType db = dm.getDbtype();
 		if (!db.equals(DatabaseType.YML)) {

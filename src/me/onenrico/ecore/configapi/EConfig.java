@@ -24,7 +24,7 @@ public class EConfig extends ConfigModule {
 	@Override
 	public GUIConfig getGUIConfig(String locale) {
 		for(EYaml conf : EYaml.getConfigs(handler)) {
-			if(conf.path.startsWith("gui")) {
+			if(!conf.path.contains("animation") && conf.path.startsWith("gui")) {
 				return (GUIConfig) conf;
 			}
 		}

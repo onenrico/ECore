@@ -79,7 +79,8 @@ public class StringUT {
 	}
 
 	public static String centered(String message) {
-		message = t(message);
+		String cachedmessage = message;
+		message = d(message);
 		int messagePxSize = 0;
 		boolean previousCode = false;
 		boolean isBold = false;
@@ -106,7 +107,7 @@ public class StringUT {
 			sb.append(" ");
 			compensated += spaceLength;
 		}
-		return String.valueOf(sb.toString()) + message;
+		return sb.toString() + cachedmessage;
 	}
 
 	public enum DefaultFontInfo {

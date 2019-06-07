@@ -1402,7 +1402,9 @@ public enum EMaterial {
     private void setup(int data) {
         final Material m = getMaterialName();
         material = m;
-        is = m != null ? version.contains("1.8") || version.contains("1.9") || version.contains("1.10") || version.contains("1.11") || version.contains("1.12") ? new ItemStack(m, 1, (byte) data) : new ItemStack(m) : null;
+        is = m != null ? version.contains("1.8") || version.contains("1.9") || version.contains("1.10") 
+        		|| version.contains("1.11") || version.contains("1.12") 
+        		? new ItemStack(m, 1, (byte) data) : new ItemStack(m) : null;
     }
     private void doEnchantmentBook(ItemStack m, Enchantment enchant, int level) {
         final EnchantmentStorageMeta sm = (EnchantmentStorageMeta) m.getItemMeta();
@@ -1421,7 +1423,14 @@ public enum EMaterial {
     // 5 = 1.13.2
     // 6 = 1.14.0
     private Material getMaterialName() {
-        final int ver = version.contains("1.8") ? 0 : version.contains("1.9") ? 1 : version.contains("1.10") ? 2 : version.contains("1.11") ? 3 : version.contains("1.12") ? 4 : version.contains("1.13") ? 5 : version.contains("1.14") ? 6 : names.length-1;
+        final int ver = version.contains("1.8") ? 0 : 
+        	version.contains("1.9") ? 1 : 
+        		version.contains("1.10") ? 2 : 
+        			version.contains("1.11") ? 3 : 
+        				version.contains("1.12") ? 4 : 
+        					version.contains("1.13") ? 5 : 
+        						version.contains("1.14") ? 6 : 
+        							names.length-1;
         int realver = names.length <= ver ? names.length-1 : ver;
         if(names[realver] == null) {
             boolean did = false;
@@ -1431,6 +1440,13 @@ public enum EMaterial {
                     did = true;
                 }
             }
+        }
+        for(String n : names) {
+        	if(n == null)continue;
+        	Material mat = Material.matchMaterial(n);
+        	if(mat != null) {
+        		return mat;
+        	}
         }
         final String t = names[realver], t2 = names.length > ver ? names[ver] : names[names.length-1];
         return t != null || t2 != null ? Material.matchMaterial(t != null ? t : t2) : null;

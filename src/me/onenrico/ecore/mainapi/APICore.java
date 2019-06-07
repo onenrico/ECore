@@ -18,13 +18,6 @@ public class APICore extends JavaPlugin {
 		MinecraftVersion.getVersion();
 		MenuLiveUpdate.startTimer();
 		getServer().getPluginManager().registerEvents(new MenuListener(), this);
-
-		if (getServer().getPluginManager().getPlugin("NeoMoreTPPlus") != null
-				&& me.onenrico.neotpplus.main.Core.getThis() != null) {
-			getLogger().info("NeoMoreTPPlus reloaded... !");
-			me.onenrico.neotpplus.main.Core.integrate();
-		}
 	}
-	
-	
+
 }
